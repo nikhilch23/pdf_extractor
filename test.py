@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import requests 
 import os
 import urllib
+from urllib.request import urlopen
+
 #wiki = "https://en.wikipedia.org/wiki/List_of_state_and_union_territory_capitals_in_India"
 
 #page = urllib.request.urlopen(wiki) #Query the website and return the html to the variable 'page'
@@ -10,8 +12,8 @@ import urllib
 
 #print(soup.prettify())
 
-image_url = "https://www.python.org/static/community_logos/python-logo-master-v3-TM.png"
-pdf_url = "https://ibbi.gov.in//webadmin/pdf/order/2019/Mar/12th Mar 2019 in the matter of Vadali Infotech Private Limited C.P. (IB)-4463-MB-2018_2019-03-19 15:01:36.pdf"
+#image_url = "https://www.python.org/static/community_logos/python-logo-master-v3-TM.png"
+#pdf_url = "https://ibbi.gov.in//webadmin/pdf/order/2019/Mar/12th Mar 2019 in the matter of Vadali Infotech Private Limited C.P. (IB)-4463-MB-2018_2019-03-19 15:01:36.pdf"
 
 #r = requests.get(pdf_url)
 
@@ -24,10 +26,21 @@ pdf_url = "https://ibbi.gov.in//webadmin/pdf/order/2019/Mar/12th Mar 2019 in the
 #	pdf .write(r.content)
 
 
-path = os.getcwd()
+#ath = os.getcwd()
 
-urllib.urlretrieve('https://ibbi.gov.in//webadmin/pdf/order/2019/Mar/12th Mar 2019 in the matter of Vadali Infotech Private Limited C.P. (IB)-4463-MB-2018_2019-03-19 15:01:36.pdf', path)
+#urllib.urlretrieve('https://ibbi.gov.in//webadmin/pdf/order/2019/Mar/12th Mar 2019 in the matter of Vadali Infotech Private Limited C.P. (IB)-4463-MB-2018_2019-03-19 15:01:36.pdf', path)
 
   
-print ("The current working directory is %s" % path)
+#print ("The current working directory is %s" % path)
 
+url = "https://www.ibbi.gov.in/orders/nclt?page=" + str(1)
+html = urlopen(url)
+
+soup = BeautifulSoup(html, 'lxml')
+
+table = soup.find('table', class_="cols-4 responsive-enabled")
+
+row = table.find_all('tr')
+
+for i in row:
+	print(i)
