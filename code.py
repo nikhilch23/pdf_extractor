@@ -29,10 +29,13 @@ except:
 	pass	
 
 
-x = 0
-for num in range(1,1):
+count1 = 0
+count2 = 0
+count3 = 0
+count4 = 0
+for x in range(1,2):
 
-	url = "https://www.ibbi.gov.in/orders/nclt?page=" + str(num)
+	url = "https://www.ibbi.gov.in/orders/nclt?page=" + str(x)
 	html = urlopen(url)
 
 	soup = BeautifulSoup(html, 'lxml')
@@ -51,21 +54,21 @@ for num in range(1,1):
 
 	orders=""
 	link=""
-	datetag=""
+	date=""
 	num=1
 	for j in row:
 		c=0
 		column = j.find_all('td')
 		for k in column:
 			c=c+1
-			#if c==3:
-			#	orderstag = str(k)
-			#	index = re.search("[A-Z]",orderstag).start()
-			#	orders = orderstag[index:-6].strip()
+			if c==3:
+				orderstag = str(k)
+				index = re.search("[A-Z]",orderstag).start()
+				orders = orderstag[index:-6].strip()
 			if c==1:
 				datetag = str(k)
-		print(datetag)
-'''	
+				index4 = re.search("[0-9]",datetag).start()
+				date = datetag[index4:-6].strip()		
 			links = j.find('a')
 			string = str(links)
 			index1 = re.search("https", string).start()
@@ -74,41 +77,27 @@ for num in range(1,1):
 		pdf_url = link	
 		if num!=1:
 			if orders == "ADMITTED":
-				try:
-					r = requests.get(pdf_url)
-					with open("ADMITTED/file" +str(x)+ ".pdf",'wb') as pdf:
-						pdf.write(r.content)
-				except:
-					pass
+				r = requests.get(pdf_url)
+				with open("ADMITTED/"+date+"_"+str(count1)+".pdf",'wb') as pdf:
+					pdf.write(r.content)
+				print(date+"_"+str(count1)+".pdf"+" downloaded"+"in ADMITTED folder")
+				count1 = count1 + 1
 			if orders == "OTHERS":
-				try:
-					r = requests.get(pdf_url)
-					with open("OTHERS/file" +str(x)+ ".pdf",'wb') as pdf:
-						pdf.write(r.content)
-				except:
-					pass
+				r = requests.get(pdf_url)
+				with open("OTHERS/"+date+"_"+str(count2)+".pdf",'wb') as pdf:
+					pdf.write(r.content)
+				print(date+"_"+str(count2)+".pdf"+" downloaded")
+				count2 = count2 + 1
 			if orders == "RESOLUTION":
-				try:
-					r = requests.get(pdf_url)
-					with open("RESOLUTION/file" +str(x)+ ".pdf",'wb') as pdf:
-						pdf.write(r.content)
-				except:
-					pass
+				r = requests.get(pdf_url)
+				with open("RESOLUTION/"+date+"_"+str(count3)+".pdf",'wb') as pdf:
+					pdf.write(r.content)				
+				print(date+"_"+str(count3)+".pdf"+" downloaded")
+				count3 = count3 + 1
 			if orders == "LIQUIDATION":
-				try:
-					r = requests.get(pdf_url)
-					with open("LIQUIDATION/file" +str(x)+ ".pdf",'wb') as pdf:
-						pdf.write(r.content)
-				except:
-					pass								
-			print("File "+str(x)+" Downloaded")
-		num = num+1	
-		x = x+1
-'''
-"""
-for i in link:
-	string = str(i)
-	index1 = re.search("https", string).start()
-	index2 = re.search(";", string).start()
-	print(str(i)[index1:index2-2])	
-"""	
+				r = requests.get(pdf_url)
+				with open("LIQUIDATION/"+date+"_"+str(count4)+".pdf",'wb') as pdf:
+					pdf.write(r.content)				
+				print(date+"_"+str(count4)+".pdf"+" downloaded")
+				count4 = count4 + 1								
+		num = num+1
