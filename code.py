@@ -6,28 +6,11 @@ import re
 import requests
 import os
 
-
-try:
-	path = os.path.join(os.getcwd(),"ADMITTED")
-	os.mkdir(path)
-except:
-	pass
-try:
-	path = os.path.join(os.getcwd(), "OTHERS")
-	os.mkdir(path)
-except:
-	pass
-try:
-	path = os.path.join(os.getcwd(), "RESOLUTION")
-	os.mkdir(path)
-except:
-	pass
-try:
-	path = os.path.join(os.getcwd(), "LIQUIDATION")
-	os.mkdir(path)
-except:
-	pass	
-
+folders = ['ADMITTED', 'OTHERS', 'RESOLUTION', 'LIQUIDATION']
+for f in folders:
+	path = os.path.join(os.getcwd(),f)
+	if not os.path.exists(path):
+		os.mkdir(path)
 
 count = 0
 for x in range(1,160):
@@ -50,9 +33,9 @@ for x in range(1,160):
 		if count == 0:
 			pass
 		else:
-			if orders == "ADMITTED" or orders == "OTHERS" or orders == "RESOLUTION" or orders == "LIQUIDATION":
+			if orders in folders:
 				r = requests.get(pdf_url)
-				with open("{order}/{date}_{count}.pdf".format(order=orders,date = date, count = count),'wb') as pdf:
+				with open("{order}/{date}_{count}.pdf".format(order=orders,date=date, count=count),'wb') as pdf:
 					pdf.write(r.content)
-				print("{date}_{count}.pdf downloaded in {order} folder".format(date = date, count = count,order = orders))
+				print("{date}_{count}.pdf downloaded in {order} folder".format(date=date, count=count, order=orders))
 		count = count + 1
